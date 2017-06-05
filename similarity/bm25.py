@@ -24,9 +24,6 @@ class BM25(object):
                 self.df[k] = self.df.get(k, 0) + 1
         for k, v in self.df.items():
             self.idf[k] = math.log(self.D-v+0.5)-math.log(v+0.5)
-        print(self.f)
-        print(self.df)
-        print(self.idf)
 
     def sim(self, doc, index):
         score = 0
@@ -45,11 +42,3 @@ class BM25(object):
             score = self.sim(doc, index)
             scores.append(score)
         return scores
-
-if __name__ == '__main__':
-    s = BM25([[u'这篇', u'文章'],
-              [u'那篇', u'论文'],
-              [u'这个']])
-    # print(s.tf)
-    print(s.idf)
-    print(s.simall([u'文章']))  # [0.3756070762985226, 0, 0]
