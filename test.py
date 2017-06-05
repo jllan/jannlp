@@ -1,6 +1,9 @@
 import jieba
 from similarity.bm25 import BM25
+from summary.textrank import TextRank
 from utils import utils
+from snownlp import seg
+
 
 text = '''
 自然语言处理是计算机科学领域与人工智能领域中的一个重要方向。
@@ -17,13 +20,18 @@ if __name__ == '__main__':
     sents = utils.get_sentences(text)
     doc = []
     for sent in sents:
-        # words = seg.seg(sent)
-        words = list(jieba.cut(sent))
+        words = seg.seg(sent)
+        # words = list(jieba.cut(sent))
         words = utils.filter_stop(words)
         doc.append(words)
     print(doc)
-    s = BM25(doc)
-    print(s.f)
-    print(s.df)
-    print(s.idf)
-    print(s.simall(['自然语言', '计算机科学', '领域', '人工智能', '领域']))
+    # s = BM25(doc)
+    # print(s.f)
+    # print(s.df)
+    # print(s.idf)
+    # print(s.simall(['自然语言', '计算机科学', '领域', '人工智能', '领域', '中', '一个', '方向']))
+
+    rank = TextRank(doc)
+    rank.text_rank()
+    for index in rank.top_index(3):
+        print(sents[index])
